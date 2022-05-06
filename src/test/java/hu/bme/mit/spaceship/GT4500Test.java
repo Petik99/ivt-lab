@@ -3,22 +3,26 @@ package hu.bme.mit.spaceship;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.mockito.Mockito.*;
 
 public class GT4500Test {
 
   private GT4500 ship;
+  private TorpedoStore primaryTorpedoStore = Mockito.mock(TorpedoStore.class);
+  private TorpedoStore secondaryTorpedoStore = Mockito.mock(TorpedoStore.class);
 
   @BeforeEach
   public void init(){
-    this.ship = new GT4500();
+    this.ship = new GT4500(primaryTorpedoStore, secondaryTorpedoStore);
   }
 
   @Test
   public void fireTorpedo_Single_Success(){
     // Arrange
-
+    when(primaryTorpedoStore.fire(1)).thenReturn(true);
+    when(primaryTorpedoStore.isEmpty()).thenReturn(false);
     // Act
     boolean result = ship.fireTorpedo(FiringMode.SINGLE);
 
@@ -29,7 +33,10 @@ public class GT4500Test {
   @Test
   public void fireTorpedo_All_Success(){
     // Arrange
-
+    Mockito.when(primaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(secondaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(primaryTorpedoStore.isEmpty()).thenReturn(false);
+    Mockito.when(secondaryTorpedoStore.isEmpty()).thenReturn(false);
     // Act
     boolean result = ship.fireTorpedo(FiringMode.ALL);
 

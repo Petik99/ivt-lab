@@ -44,4 +44,49 @@ public class GT4500Test {
     assertEquals(true, result);
   }
 
+  @Test
+  public void fireTorpedo_Single2_Success(){
+    // Arrange
+    Mockito.when(primaryTorpedoStore.fire(1)).thenReturn(false);
+    Mockito.when(secondaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(primaryTorpedoStore.isEmpty()).thenReturn(true);
+    Mockito.when(secondaryTorpedoStore.isEmpty()).thenReturn(false);
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(true, result);
+  }
+
+  @Test
+  public void fireTorpedo_DoubleSingle_Success(){
+    // Arrange
+    Mockito.when(primaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(secondaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(primaryTorpedoStore.isEmpty()).thenReturn(false);
+    Mockito.when(secondaryTorpedoStore.isEmpty()).thenReturn(false);
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result2 = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(true, result);
+    assertEquals(true, result2);
+  }
+
+  @Test
+  public void fireTorpedo_SingleDoubleFirst_Success(){
+    // Arrange
+    Mockito.when(primaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(secondaryTorpedoStore.fire(1)).thenReturn(true);
+    Mockito.when(primaryTorpedoStore.isEmpty()).thenReturn(false);
+    Mockito.when(secondaryTorpedoStore.isEmpty()).thenReturn(true);
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result2 = ship.fireTorpedo(FiringMode.SINGLE);
+    // Assert
+    assertEquals(true, result);
+    assertEquals(true, result2);
+  }
+
 }
